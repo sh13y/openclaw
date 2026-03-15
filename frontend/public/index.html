@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>OpenClaw — AI Crypto Wallet Scanner</title>
+  <link rel="stylesheet" href="css/style.css"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet"/>
+</head>
+<body>
+  <div class="scanline"></div>
+
+  <!-- ── Header ─────────────────────────────────── -->
+  <header class="header">
+    <div class="header-left">
+      <svg class="logo" viewBox="0 0 44 44" fill="none">
+        <circle cx="22" cy="22" r="21" stroke="#00e5ff" stroke-width="1.5" stroke-dasharray="4 2"/>
+        <path d="M22 8 L28 20 L22 17 L16 20 Z" fill="#00e5ff" opacity="0.9"/>
+        <path d="M22 36 L28 24 L22 27 L16 24 Z" fill="#00e5ff" opacity="0.5"/>
+        <path d="M10 22 L20 16 L17 22 L20 28 Z" fill="#00e5ff" opacity="0.7"/>
+        <path d="M34 22 L24 16 L27 22 L24 28 Z" fill="#00e5ff" opacity="0.7"/>
+        <circle cx="22" cy="22" r="3" fill="#00e5ff"/>
+      </svg>
+      <div class="brand">
+        <h1>OPENCLAW</h1>
+        <p>AI Crypto Wallet Scanner · BNB Chain</p>
+      </div>
+    </div>
+    <div class="header-right">
+      <div class="market-ticker" id="marketTicker">
+        <span class="ticker-item">BNB <span class="price" id="bnbPrice">—</span></span>
+        <span class="ticker-item">BTC <span class="price" id="btcPrice">—</span></span>
+        <span class="ticker-item">ETH <span class="price" id="ethPrice">—</span></span>
+      </div>
+      <span class="status-dot" id="statusDot"></span>
+    </div>
+  </header>
+
+  <!-- ── Chain selector ─────────────────────────── -->
+  <nav class="chain-nav">
+    <button class="chain-btn active" data-chain="bsc">BNB Chain</button>
+    <button class="chain-btn" data-chain="eth" disabled>ETH (soon)</button>
+    <button class="chain-btn" data-chain="polygon" disabled>Polygon (soon)</button>
+  </nav>
+
+  <!-- ── Scan bar ───────────────────────────────── -->
+  <section class="scan-bar">
+    <div class="input-group">
+      <label class="input-label">// wallet address</label>
+      <input
+        type="text"
+        id="walletInput"
+        class="wallet-input"
+        placeholder="0x... BNB/BSC wallet address"
+        autocomplete="off"
+        spellcheck="false"
+      />
+    </div>
+    <button class="scan-btn" id="scanBtn">
+      <span id="scanBtnText">SCAN WALLET</span>
+    </button>
+  </section>
+
+  <div class="error-banner hidden" id="errorBanner"></div>
+
+  <!-- ── Main grid ──────────────────────────────── -->
+  <main class="main-grid">
+
+    <!-- Left: Holdings -->
+    <section class="panel" id="holdingsPanel">
+      <div class="panel-header">
+        <span class="panel-title">// token holdings</span>
+        <span class="panel-sub" id="holdingsCount">—</span>
+      </div>
+      <div class="holdings-list" id="holdingsList">
+        <div class="empty-state" id="holdingsEmpty">
+          <div class="empty-icon">◈</div>
+          <p>Scan a wallet to view holdings</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Center: Stats + Risk -->
+    <section class="panel" id="statsPanel">
+      <div class="panel-header">
+        <span class="panel-title">// portfolio analysis</span>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-label">Total Value</div>
+          <div class="stat-value accent" id="statTotal">—</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">BNB Balance</div>
+          <div class="stat-value" id="statBnb">—</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Tokens</div>
+          <div class="stat-value green" id="statTokens">—</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Transactions</div>
+          <div class="stat-value" id="statTxs">—</div>
+        </div>
+      </div>
+
+      <div class="risk-card" id="riskCard">
+        <div class="risk-header">
+          <span class="panel-title">// risk assessment</span>
+          <span class="risk-badge hidden" id="riskBadge"></span>
+        </div>
+        <div class="risk-meter">
+          <div class="risk-bar-track">
+            <div class="risk-bar-fill" id="riskBarFill" style="width:0%"></div>
+          </div>
+          <span class="risk-score" id="riskScore">—/100</span>
+        </div>
+        <div class="risk-breakdown" id="riskBreakdown">
+          <div class="empty-state small"><p>No data yet</p></div>
+        </div>
+        <div class="flags-list" id="flagsList"></div>
+      </div>
+
+      <div class="panel-header" style="margin-top:12px">
+        <span class="panel-title">// recent transactions</span>
+      </div>
+      <div class="tx-list" id="txList">
+        <div class="empty-state small"><p>No transactions loaded</p></div>
+      </div>
+    </section>
+
+    <!-- Right: AI Chat -->
+    <section class="panel" id="chatPanel">
+      <div class="panel-header">
+        <span class="panel-title">// openclaw ai</span>
+        <span class="ai-indicator">
+          <span class="status-dot pulse"></span> ONLINE
+        </span>
+      </div>
+      <div class="chat-messages" id="chatMessages">
+        <div class="msg ai">
+          <div class="msg-label">OPENCLAW · READY</div>
+          <div class="msg-text">Enter a BNB Chain wallet address and hit SCAN. I'll analyze holdings, detect risks, and answer your questions in real time.</div>
+        </div>
+      </div>
+      <div class="chat-input-row">
+        <input
+          type="text"
+          id="chatInput"
+          class="chat-input"
+          placeholder="ask openclaw anything..."
+          autocomplete="off"
+        />
+        <button class="chat-send" id="chatSend">ASK</button>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ── Footer ─────────────────────────────────── -->
+  <footer class="footer">
+    <span>OpenClaw v1.0 · BNB Chain Analytics · Powered by BscScan + CoinGecko + Anthropic</span>
+    <span id="lastScan"></span>
+  </footer>
+
+  <script src="js/api.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

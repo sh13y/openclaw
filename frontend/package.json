@@ -1,0 +1,16 @@
+{
+  "name": "openclaw-frontend",
+  "version": "1.0.0",
+  "description": "OpenClaw AI Crypto Wallet Scanner - Frontend",
+  "scripts": {
+    "start": "npx serve public -p 3000",
+    "dev": "npx live-server public --port=3000",
+    "dev:all": "concurrently \"npm --prefix ../backend run dev\" \"npm run dev\"",
+    "start:all": "concurrently \"npm --prefix ../backend start\" \"npm start\""
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "live-server": "^1.2.2",
+    "serve": "^14.2.1"
+  }
+}
