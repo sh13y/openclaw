@@ -78,6 +78,6 @@ app.use((err, req, res, next) => {
 
 app.listen(PORT, () => {
   console.log(`\n🦀  OpenClaw backend running on http://localhost:${PORT}`);
-  console.log(`    Anthropic key: ${process.env.ANTHROPIC_API_KEY ? '✅' : '❌ missing'}`);
+  console.log(`    Groq key:      ${process.env.GROQ_API_KEY ? '✅' : '❌ missing'}`);
   console.log(`    BscScan key:   ${process.env.BSCSCAN_API_KEY ? '✅' : '❌ missing'}\n`);
 });

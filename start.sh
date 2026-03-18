@@ -26,15 +26,18 @@ fi
 # Install dependencies
 echo "  📦 Installing Python dependencies..."
 cd backend
-pip install -r requirements.txt -q
+pip install -r requirements.txt -q 2>/dev/null || pip3 install -r requirements.txt -q
 
 # Load .env
-export $(grep -v '^#' .env | xargs) 2>/dev/null
+if [ -f ".env" ]; then
+    export $(grep -v '^#' .env | xargs) 2>/dev/null
+fi
 
-echo "  🚀 Starting backend on http://localhost:8000"
-echo "  📖 Open http://localhost:8000 in your browser"
+PORT=${PORT:-8000}
+echo "  🚀 Starting backend on http://localhost:$PORT"
+echo "  📖 Open http://localhost:$PORT in your browser"
 echo "  ✋ Press Ctrl+C to stop"
 echo ""
 
 # Start server
-python -m uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+python3 -m uvicorn main:app --host 0.0.0.0 --port $PORT --reload

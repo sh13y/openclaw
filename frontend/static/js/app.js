@@ -2,10 +2,7 @@
    OpenClaw — Frontend App Logic (Premium Edition)
    ═══════════════════════════════════════════════════════════════════════════ */
 
-const API = (() => {
-  const o = window.location.origin;
-  return (o.includes('localhost') || o.includes('127.0')) ? 'http://localhost:8000' : o;
-})();
+const API = '';
 
 /* ── STATE ─────────────────────────────────────────────────────────────── */
 const S = {

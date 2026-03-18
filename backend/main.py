@@ -26,6 +26,11 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# ─── STATIC FILES ─────────────────────────────────────────────────────────────
+FRONTEND_DIR = Path(__file__).parent.parent / "frontend"
+if (FRONTEND_DIR / "static").exists():
+    app.mount("/static", StaticFiles(directory=FRONTEND_DIR / "static"), name="static")
+
 # ─── CONFIG ───────────────────────────────────────────────────────────────────
 GROQ_API_KEY = os.getenv("GROQ_API_KEY", "")          # Free at console.groq.com
 GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions"
