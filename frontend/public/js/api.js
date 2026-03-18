@@ -1,9 +1,8 @@
 /**
  * OpenClaw API Client
- * Communicates with the backend at localhost:3001
  */
 
-const API_BASE = 'http://localhost:3001/api';
+const API_BASE = '/api';
 
 const Api = {
   /**

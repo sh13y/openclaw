@@ -1,15 +1,15 @@
 #!/bin/bash
 # ─────────────────────────────────────────────────────────────────
-# OpenClaw Startup Script
+# OpenClaw Startup Script (Node.js)
 # ─────────────────────────────────────────────────────────────────
 
 echo ""
-echo "  🦾 OpenClaw — Crypto AI Educator"
-echo "  ─────────────────────────────────"
+echo "  🦀 OpenClaw — AI Crypto Wallet Scanner"
+echo "  ───────────────────────────────────────"
 
-# Check Python
-if ! command -v python3 &> /dev/null; then
-    echo "  ❌ Python 3 not found. Install from python.org"
+# Check Node.js
+if ! command -v node &> /dev/null; then
+    echo "  ❌ Node.js not found. Install from nodejs.org"
     exit 1
 fi
 
@@ -18,26 +18,21 @@ if [ ! -f "backend/.env" ]; then
     echo "  ⚠  No .env found. Creating from template..."
     cp backend/.env.example backend/.env
     echo ""
-    echo "  👉 IMPORTANT: Edit backend/.env and add your free Groq API key"
-    echo "     Get one free at: https://console.groq.com"
+    echo "  👉 IMPORTANT: Edit backend/.env and add your API keys"
+    echo "     - GROQ_API_KEY: Free at https://console.groq.com"
+    echo "     - BSCSCAN_API_KEY: Free at https://bscscan.com/apis"
     echo ""
 fi
 
 # Install dependencies
-echo "  📦 Installing Python dependencies..."
+echo "  📦 Installing dependencies..."
 cd backend
-pip install -r requirements.txt -q 2>/dev/null || pip3 install -r requirements.txt -q
+npm install --silent
 
-# Load .env
-if [ -f ".env" ]; then
-    export $(grep -v '^#' .env | xargs) 2>/dev/null
-fi
-
-PORT=${PORT:-8000}
-echo "  🚀 Starting backend on http://localhost:$PORT"
-echo "  📖 Open http://localhost:$PORT in your browser"
+PORT=${PORT:-3001}
+echo "  🚀 Starting server on http://localhost:$PORT"
 echo "  ✋ Press Ctrl+C to stop"
 echo ""
 
 # Start server
-python3 -m uvicorn main:app --host 0.0.0.0 --port $PORT --reload
+npm start

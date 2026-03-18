@@ -1,6 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
+const path = require('path');
 const rateLimit = require('express-rate-limit');
 
 const walletRoutes = require('./routes/wallet');
@@ -12,27 +13,10 @@ const PORT = process.env.PORT || 3001;
 
 // ── Middleware ────────────────────────────────────────────────
 app.use(express.json());
+app.use(cors());
 
-// CORS configuration - allow both localhost and 127.0.0.1
-const allowedOrigins = [
-  'http://localhost:3000',
-  'http://127.0.0.1:3000',
-  'http://localhost:5000',
-  'http://127.0.0.1:5000',
-];
-
-app.use(cors({
-  origin: (origin, callback) => {
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error('CORS not allowed'));
-    }
-  },
-  methods: ['GET', 'POST'],
-  allowedHeaders: ['Content-Type'],
-  credentials: true,
-}));
+// Serve static frontend files
+app.use(express.static(path.join(__dirname, '../../frontend/public')));
 
 // Global rate limiter
 app.use(rateLimit({
@@ -67,8 +51,10 @@ app.get('/api/health', (req, res) => {
   });
 });
 
-// 404 catch-all
-app.use((req, res) => res.status(404).json({ error: 'Endpoint not found' }));
+// Serve frontend for all non-API routes
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../../frontend/public/index.html'));
+});
 
 // Error handler
 app.use((err, req, res, next) => {
